@@ -1,0 +1,182 @@
+openapi: 3.0.0
+info:
+  title: E-commerce API
+  description: Docement E-commerce API Design 
+  version: 1.0.0
+  contact: 
+    name: Renad
+    email: renadyalmghamesi@gmail.com
+
+servers:
+  - url: http://localhost:3001
+
+tags: 
+ - name: products
+   description: operations on products
+ - name: users
+   description: operations on users
+ - name: orders
+   description: operations on orders
+ - name: categories
+   description: operations on categories
+
+components:
+  schemas: 
+   Product:
+    type: object 
+    properties: 
+     id: 
+      type: string
+     title:
+      type: string
+     price:
+      type: number
+     description:
+      type: string
+     category: 
+      type: string
+     image:
+      type: string
+     rating:
+      type: object
+      properties:
+       rate:
+        type: number
+       count:
+        type: number
+ 
+paths:
+  /products:
+    get:
+      tags:
+        - products
+      summary: Retrieve all products
+      responses:
+        200:
+          description: list of products
+          content: 
+           application/json:
+            schema:
+             type: array
+             items:
+               $ref: '#/components/schemas/Product'
+
+        500:
+          description: server error 
+           
+    post:
+      tags:
+        - products
+      summary: craete a proudct
+      requestBody: 
+          content: 
+           application/json:
+            schema:
+               $ref: '#/components/schemas/Product'
+      responses:
+        201:
+          description: create a product
+          content: 
+           application/json:
+            schema:
+               $ref: '#/components/schemas/Product'
+
+        500:
+          description: server error 
+          
+  /products/{productId}:      
+    get:
+      tags:
+        - products
+      summary: get a product
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+           type: string
+      responses:
+        201:
+          description: find product by ID 
+          content: 
+           application/json:
+            schema:
+               $ref: '#/components/schemas/Product'
+        404:
+          description: product is not found 
+        500:
+          description: server error
+
+    delete:
+     tags:
+        - products
+     summary: delete a product
+     parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+           type: string
+     responses:
+        200:
+          description: delete a product by ID 
+        404:
+          description: product is not found 
+        500:
+          description: server error
+    put:
+     tags:
+        - products
+     summary: update a product
+     parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+           type: string
+     requestBody:
+      content: 
+           application/json:
+            schema:
+               $ref: '#/components/schemas/Product'
+     responses:
+        200:
+          description: update a product by ID 
+          content: 
+           application/json:
+            schema:
+               $ref: '#/components/schemas/Product'
+        404:
+          description: product is not found 
+        500:
+          description: server error
+
+  /products/searchText:      
+     get:
+      tags:
+        - products
+      summary: search products
+      parameters:
+        - in: query
+          name: searchText
+          required: true
+          schema:
+           type: string
+      responses:
+        201:
+          description: serach products by name
+          content: 
+           application/json:
+            schema:
+              type: array
+              items:
+               $ref: '#/components/schemas/Product'
+        404:
+          description: can not find the products
+        500:
+          description: server error
+
+          
+        
+
+        
